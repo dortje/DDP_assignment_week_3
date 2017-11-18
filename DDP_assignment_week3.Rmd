@@ -9,7 +9,8 @@ output: ioslides_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Plot of mtcars hp to mpg categorized by cyl
+## Plot of mtcars
+Plotting variables hp (x axis), mpg(y axis) and cyl (color) including a regression line for lm(mpg~hp).
 
 ```{r plot_cars, warnings=FALSE, message=FALSE}
 library(plotly)
@@ -18,8 +19,13 @@ mtcars$cyl <- as.factor(mtcars$cyl)
 mtcars$vs <- as.factor(mtcars$vs)
 mtcars$am <- as.factor(mtcars$am)
 
-plot_ly(mtcars, x=~hp, y=~mpg, color=~cyl, mode="markers", text=~paste(rownames(mtcars)))
-    
+fit <- lm(mpg ~ hp, data=mtcars)
+
+mtcars %>%
+    plot_ly(x=~hp) %>%
+    add_markers(y=~mpg, color=~cyl, mode="markers", 
+        text=~paste(rownames(mtcars))) %>%
+    add_lines(x=~hp, y=fitted(fit), name="lm")
 ```
 
 ## Code for the Plot
@@ -31,7 +37,13 @@ mtcars$cyl <- as.factor(mtcars$cyl)
 mtcars$vs <- as.factor(mtcars$vs)
 mtcars$am <- as.factor(mtcars$am)
 
-plot_ly(mtcars, x=~hp, y=~mpg, color=~cyl, mode="markers", text=~paste(rownames(mtcars)))
+fit <- lm(mpg ~ hp, data=mtcars)
+
+mtcars %>%
+    plot_ly(x=~hp) %>%
+    add_markers(y=~mpg, color=~cyl, mode="markers", 
+        text=~paste(rownames(mtcars))) %>%
+    add_lines(x=~hp, y=fitted(fit), name="lm")
 ```
 
 ## Thank you
